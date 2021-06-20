@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox fx:id="itemC" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="53.0" prefWidth="695.0" spacing="80.0" style="-fx-background-color: #02030A; -fx-background-radius: 5; -fx-background-insets: 0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+      <Label alignment="CENTER" minWidth="-Infinity" text="1" textFill="#b7c3d7">
+         <HBox.margin>
+            <Insets left="25.0" />
+         </HBox.margin>
+      </Label>
+        <Label minWidth="-Infinity" text="Лазо Константин Олегович" textFill="#b7c3d7">
+         <HBox.margin>
+            <Insets left="-40.0" />
+         </HBox.margin></Label>
+        <Label minWidth="-Infinity" text="Шоссе в Лаврики" textFill="#b7c3d7">
+            <HBox.margin>
+                <Insets left="-50.0" />
+            </HBox.margin>
+        </Label>
+        <Label minWidth="-Infinity" text="Собственно" textFill="#b7c3d7">
+            <HBox.margin>
+                <Insets left="-48.0" />
+            </HBox.margin>
+        </Label>
+        <Label minWidth="-Infinity" text="Что-то" textFill="#b7c3d7">
+            <HBox.margin>
+                <Insets left="-40.0" />
+            </HBox.margin>
+        </Label>
+        <Button minWidth="-Infinity" mnemonicParsing="false" prefHeight="27.0" prefWidth="77.0" style="-fx-border-color: #2A73FF; -fx-border-radius: 20; -fx-background-color: transparent;" stylesheets="@style.css" text="Ожидает">
+            <HBox.margin>
+                <Insets left="-40.0" />
+            </HBox.margin>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+        </Button>
+    </children>
+    <effect>
+        <DropShadow blurType="GAUSSIAN" height="5.0" radius="2.0" width="5.0" />
+    </effect>
+</HBox>
