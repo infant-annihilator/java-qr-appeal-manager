@@ -69,6 +69,14 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Создаёт объект заявления по параметрам
+     * @param fioDeclarant
+     * @param fioDirector
+     * @param address
+     * @param topic
+     * @return
+     */
     public static Appeal createAppealObject(String fioDeclarant, String fioDirector, String address, String topic) {
         Appeal appeal = new Appeal();
         appeal.setFioDeclarant(fioDeclarant);
