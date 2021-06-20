@@ -69,24 +69,14 @@ public class Main extends Application {
         }
     }
 
-    public Appeal createAppealObject(String fioDeclarant, String fioDirector, String address, String topic) {
+    public static Appeal createAppealObject(String fioDeclarant, String fioDirector, String address, String topic) {
         Appeal appeal = new Appeal();
         appeal.setFioDeclarant(fioDeclarant);
         appeal.setFioDirector(fioDirector);
         appeal.setAddress(address);
         appeal.setTopic(topic);
-
+        // return appealOpertations.save(appeal);
         return appeal;
-    }
-
-    public static int newAppeal() throws SQLException {
-        Appeal appeal = new Appeal();
-        AppealOperations appealOpertations = new AppealOperations();
-        appeal.setFioDeclarant("Егор Семенов");
-        appeal.setFioDirector("Константин Лазо");
-        appeal.setAddress("шоссе в Лаврики");
-        appeal.setTopic("Унитаз не работает");
-        return appealOpertations.save(appeal);
     }
 
     /**
