@@ -108,7 +108,6 @@ public class Appeal implements Serializable {
 
     /**
      * Выводит модель как строку с разделителем
-     * @param resultSet
      * @param separator
      * @throws SQLException
      */
