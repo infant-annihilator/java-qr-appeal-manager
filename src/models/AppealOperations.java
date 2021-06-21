@@ -26,20 +26,48 @@ public class AppealOperations {
      * @return
      * @throws SQLException
      */
-    public static ResultSet findById(String id) throws SQLException {
+    public static Appeal findById(int id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         List<Appeal> appeals = new ArrayList<>();
 
-        connection = Database.getDBConnection();
+        // подключение к БД
+        Database db = new Database();
+        connection = db.connect();
         connection.setAutoCommit(false);
-        String query = "SELECT id, FIO_declarant, FIO_director, address, topic FROM appeal WHERE id = ?";
+        String query = "SELECT * FROM appeal WHERE id = ?";
         statement = connection.prepareStatement(query);
-        int counter = 1;
-        statement.setString(counter++, id);
+        statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
 
-        return resultSet;
+        if (resultSet.next()) {
+            String fioDeclarant = resultSet.getString("FIO_declarant");
+            String fioDirector = resultSet.getString("FIO_director");
+            String address = resultSet.getString("address");
+            String topic = resultSet.getString("topic");
+
+            Appeal appeal = new Appeal(id, fioDeclarant, fioDirector, address, topic);
+
+            return appeal;
+        }
+        return null;
+    }
+
+    /**
+     * Выводит модель как строку с разделителем
+     * @param resultSet
+     * @param separator
+     * @throws SQLException
+     */
+    public void printAsString(ResultSet resultSet, String separator) throws SQLException {
+        while(resultSet.next()) {
+
+            String FIODeclarant = resultSet.getString("FIO_declarant");
+            String topic = resultSet.getString("topic");
+
+//            System.out.printf("%d. %s - %d \n", id, FIODeclarant, topic);
+            System.out.println(FIODeclarant + separator + topic);
+        }
     }
 
     /**
@@ -54,22 +82,15 @@ public class AppealOperations {
         List<Appeal> appeals = new ArrayList<>();
 
         try {
-            connection = Database.getDBConnection();
+            // подключение к БД
+            Database db = new Database();
+            connection = db.connect();
             connection.setAutoCommit(false);
             String query = "SELECT id, FIO_declarant, FIO_director, address, topic FROM appeal WHERE id = ?";
             statement = connection.prepareStatement(query);
             int counter = 1;
             statement.setString(counter++, id);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Appeal appeal = new Appeal();
-                appeal.setId(resultSet.getInt(1));
-                appeal.setFioDeclarant(resultSet.getString(2));
-                appeal.setFioDirector(resultSet.getString(3));
-                appeal.setAddress(resultSet.getString(4));
-                appeal.setTopic(resultSet.getString(5));
-                appeals.add(appeal);
-            }
 
             return !appeals.isEmpty();
         } catch (SQLException exception) {
@@ -98,7 +119,9 @@ public class AppealOperations {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            connection = Database.getDBConnection();
+            // подключение к БД
+            Database db = new Database();
+            connection = db.connect();
             connection.setAutoCommit(false);
             String query = "INSERT INTO appeal(FIO_declarant, FIO_director, address, topic) VALUES(?, ?, ?, ?)";
             statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
