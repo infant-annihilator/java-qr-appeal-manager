@@ -10,9 +10,7 @@ import java.util.logging.Logger;
 import static java.lang.System.out;
 
 /**
- * Database
- * @author Julian Jupiter
- *
+ * Класс для работы с БД
  */
 public class Database {
 

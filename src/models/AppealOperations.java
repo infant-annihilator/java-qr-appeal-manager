@@ -21,39 +21,6 @@ public class AppealOperations {
     private static final Logger logger = Logger.getLogger(AppealOperations.class.getName());
 
     /**
-     * Ищет заявление по id
-     * @param id
-     * @return
-     * @throws SQLException
-     */
-    public static Appeal findById(int id) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        List<Appeal> appeals = new ArrayList<>();
-
-        // подключение к БД
-        Database db = new Database();
-        connection = db.connect();
-        connection.setAutoCommit(false);
-        String query = "SELECT * FROM appeal WHERE id = ?";
-        statement = connection.prepareStatement(query);
-        statement.setInt(1, id);
-        ResultSet resultSet = statement.executeQuery();
-
-        if (resultSet.next()) {
-            String fioDeclarant = resultSet.getString("FIO_declarant");
-            String fioDirector = resultSet.getString("FIO_director");
-            String address = resultSet.getString("address");
-            String topic = resultSet.getString("topic");
-
-            Appeal appeal = new Appeal(id, fioDeclarant, fioDirector, address, topic);
-
-            return appeal;
-        }
-        return null;
-    }
-
-    /**
      * Выводит модель как строку с разделителем
      * @param resultSet
      * @param separator

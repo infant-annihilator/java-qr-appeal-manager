@@ -54,7 +54,7 @@ public class Main extends Application {
      */
     public static void printAppeal(int id) throws SQLException {
         Appeal appeal = Appeal.findById(id);
-        System.out.println(appeal.printAsString(":"));
+        System.out.println(appeal.printAsString());
     }
 
     public static void getAppeals() throws SQLException {

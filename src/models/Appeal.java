@@ -19,18 +19,30 @@ import java.util.List;
 public class Appeal implements Serializable {
 
     private static final long serialVersionUID = 3789909326487155148L;
+    private static final int STATUS_REJECTED = 0;
+    private static final int STATUS_CHECKED = 1;
+    private static final int STATUS_AWAITING = 2;
     private int id;
     private String fioDeclarant;
     private String fioDirector;
     private String address;
     private String topic;
+    private String content;
+    private String resolution;
+    private String note;
+    private int status;
 
-    public Appeal(int id, String fioDeclarant, String fioDirector, String address, String topic) {
+
+    public Appeal(int id, String fioDeclarant, String fioDirector, String address, String topic, String content, String resolution, String note, int status) {
         this.id = id;
         this.fioDeclarant = fioDeclarant;
         this.fioDirector = fioDirector;
         this.address = address;
         this.topic = topic;
+        this.content = content;
+        this.resolution = resolution;
+        this.note = note;
+        this.status = status;
     }
 
     /**
@@ -58,8 +70,12 @@ public class Appeal implements Serializable {
             String fioDirector = resultSet.getString("FIO_director");
             String address = resultSet.getString("address");
             String topic = resultSet.getString("topic");
+            String content = resultSet.getString("content");
+            String resolution = resultSet.getString("resolution");
+            String note = resultSet.getString("note");
+            int status = resultSet.getInt("status");
 
-            Appeal appeal = new Appeal(id, fioDeclarant, fioDirector, address, topic);
+            Appeal appeal = new Appeal(id, fioDeclarant, fioDirector, address, topic, content, resolution, note, status);
 
             return appeal;
         }
@@ -106,12 +122,51 @@ public class Appeal implements Serializable {
         this.topic = topic;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getResolution() {
+        return resolution;
+    }
+
+    public void setResolution(String resolution) {
+        this.resolution = resolution;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     /**
-     * Выводит модель как строку с разделителем
-     * @param separator
+     * Возвращает модель как строку с разделителем
      * @throws SQLException
      */
-    public String printAsString(String separator) throws SQLException {
-            return this.fioDeclarant + separator + this.topic;
+    public String printAsString() throws SQLException {
+            return "id:" + this.id
+                    + " FIO_declarant:" + this.fioDeclarant
+                    + " FIO_director" + this.fioDirector
+                    + " address:" + this.address
+                    + " topic:" + this.topic
+                    + " content:" + this.content
+                    + " resolution:" + this.resolution
+                    + " note:" + this.note
+                    + " status:" + this.status;
     }
 }
