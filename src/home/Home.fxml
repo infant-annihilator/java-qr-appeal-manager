@@ -1,23 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.TextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.BoxBlur?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="home.Controller">
    <children>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Untitled Tab 1">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+          <Tab text="Untitled Tab 2">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
       <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fitHeight="73.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
@@ -32,7 +57,7 @@
                   <Insets bottom="20.0" />
                </VBox.margin>
             </Label>
-            <Button fx:id="btnOverview" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Главная" textFill="#e7e5e5">
+            <Button fx:id="btnMain" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Главная" textFill="#e7e5e5">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -53,7 +78,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="btnOrders" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Новые заявки">
+            <Button fx:id="btnNewAppeals" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Новые заявки">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -68,7 +93,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="btnCustomers" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Написать обращение">
+            <Button fx:id="btnAddAppeal" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Написать обращение">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -83,7 +108,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="btnMenus" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Сканировать QR">
+            <Button fx:id="btnScanQR" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Сканировать QR">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -102,100 +127,516 @@
       </VBox>
       <StackPane layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
          <children>
-            <Pane fx:id="pnlCustomer" prefHeight="200.0" prefWidth="200.0" />
-            <Pane fx:id="pnlOrders" prefHeight="200.0" prefWidth="200.0" />
-            <Pane fx:id="pnlMenus" prefHeight="200.0" prefWidth="200.0">
+            <Pane fx:id="pnlAppealCreated" prefHeight="200.0" prefWidth="200.0" visible="false">
                <children>
-                  <Pane fx:id="pnlOverview" prefHeight="576.0" prefWidth="793.0">
+                  <Label layoutX="368.0" layoutY="170.0" text="✓" textFill="#e7e5e5">
+                     <font>
+                        <Font size="58.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="242.0" layoutY="234.0" prefHeight="85.0" prefWidth="310.0" text="Заявление успешно сохранено. QR-код сгенерирован." textFill="#e7e5e5" />
+                  <Button layoutX="304.0" layoutY="307.0" mnemonicParsing="false" onAction="#toHome" text="Главная">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button layoutX="380.0" layoutY="307.0" mnemonicParsing="false" onAction="#toNewAppeal" text="+ Добавить ещё">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlNewAppeal" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Label text="Написать обращение" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <padding>
+                        <Insets left="35.0" top="25.0" />
+                     </padding>
+                  </Label>
+                  <Label layoutX="47.0" layoutY="94.0" text="ФИО Заявителя" textFill="#e7e5e5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="inputFIODeclarant" layoutX="174.0" layoutY="91.0" prefHeight="25.0" prefWidth="382.0" promptText="ФИО Заявителя" />
+                  <TextField fx:id="inputFIODirector" layoutX="174.0" layoutY="134.0" prefHeight="25.0" prefWidth="382.0" promptText="ФИО Директора" />
+                  <TextField fx:id="inputAddress" layoutX="174.0" layoutY="177.0" prefHeight="25.0" prefWidth="382.0" promptText="Адрес" />
+                  <Label layoutX="42.0" layoutY="137.0" text="ФИО Директора" textFill="#e7e5e5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="108.0" layoutY="180.0" text="Адрес" textFill="#e7e5e5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="inputTopic" layoutX="174.0" layoutY="218.0" prefHeight="25.0" prefWidth="382.0" promptText="Тема" />
+                  <Label layoutX="114.0" layoutY="222.0" text="Тема" textFill="#e7e5e5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="67.0" layoutY="263.0" text="Содержание" textFill="#e7e5e5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextArea fx:id="inputContext" layoutX="174.0" layoutY="263.0" prefHeight="200.0" prefWidth="382.0" promptText="Содержание" />
+                  <Button fx:id="btnNewAppeal" layoutX="174.0" layoutY="494.0" mnemonicParsing="false" onAction="#newAppeal" text="Сохранить">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlHome1" disable="true" prefHeight="576.0" prefWidth="793.0" visible="false">
+               <children>
+                  <Label layoutX="36.0" layoutY="25.0" text="Все заявки" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER_LEFT" layoutX="200.0" layoutY="72.0" prefHeight="92.0" prefWidth="403.0" spacing="50.0">
                      <children>
-                        <Label layoutX="36.0" layoutY="25.0" text="Новые заявки" textFill="#e7e5e5">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <HBox alignment="CENTER_LEFT" layoutX="200.0" layoutY="72.0" prefHeight="92.0" prefWidth="403.0" spacing="50.0">
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                                 <children>
-                                    <Label text="22" textFill="#2a73ff">
-                                       <font>
-                                          <Font name="System Bold" size="26.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="Приняты" textFill="#e7e5e5" />
-                                 </children>
-                              </VBox>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                                 <children>
-                                    <Label text="15" textFill="#26bfbc">
-                                       <font>
-                                          <Font name="System Bold" size="26.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="Ожидают" textFill="#e7e5e5" />
-                                 </children>
-                              </VBox>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                                 <children>
-                                    <Label text="10" textFill="#fa5f7e">
-                                       <font>
-                                          <Font name="System Bold" size="26.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="Отклонено" textFill="#e7e5e5" />
-                                 </children>
-                              </VBox>
+                              <Label text="22" textFill="#2a73ff">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Приняты" textFill="#e7e5e5" />
                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" layoutX="45.0" layoutY="178.0" prefHeight="42.0" prefWidth="712.0" spacing="80.0" style="-fx-background-color: #02030A;">
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label text="Заявитель" textFill="#e7e5e5">
-                                 <HBox.margin>
-                                    <Insets left="50.0" />
-                                 </HBox.margin>
+                              <Label text="15" textFill="#26bfbc">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
                               </Label>
-                              <Label text="Адрес" textFill="#e7e5e5">
-                                 <HBox.margin>
-                                    <Insets left="42.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <Label text="Тематика" textFill="#e7e5e5">
-                                 <HBox.margin>
-                                    <Insets left="12.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <Label text="Ну" textFill="#e7e5e5">
-                                 <HBox.margin>
-                                    <Insets left="-22.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <Label text="Статус" textFill="#e7e5e5">
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </Label>
+                              <Label text="Ожидают" textFill="#e7e5e5" />
                            </children>
-                           <effect>
-                              <Bloom />
-                           </effect>
-                        </HBox>
-                        <ScrollPane layoutX="14.0" layoutY="232.0" prefHeight="320.0" prefWidth="746.0" stylesheets="@style.css">
-                           <content>
-                              <VBox fx:id="pnItems" prefHeight="318.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #02030A;">
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </VBox>
-                           </content>
-                        </ScrollPane>
-                        <Button fx:id="btnClose" layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="10" textFill="#fa5f7e">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Отклонено" textFill="#e7e5e5" />
+                           </children>
+                        </VBox>
                      </children>
-                  </Pane>
-               </children></Pane>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="45.0" layoutY="178.0" prefHeight="42.0" prefWidth="712.0" spacing="80.0" style="-fx-background-color: #02030A;">
+                     <children>
+                        <Label text="Заявитель" textFill="#e7e5e5">
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label text="Адрес" textFill="#e7e5e5">
+                           <HBox.margin>
+                              <Insets left="42.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label text="Тематика" textFill="#e7e5e5">
+                           <HBox.margin>
+                              <Insets left="12.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label text="Ну" textFill="#e7e5e5">
+                           <HBox.margin>
+                              <Insets left="-22.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label text="Статус" textFill="#e7e5e5">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <effect>
+                        <Bloom />
+                     </effect>
+                  </HBox>
+                  <ScrollPane layoutX="14.0" layoutY="232.0" prefHeight="320.0" prefWidth="746.0" stylesheets="@style.css">
+                     <content>
+                        <VBox fx:id="pnItems" prefHeight="318.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #02030A;">
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+                  <Button fx:id="btnClose1" layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlScanQR" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Region fx:id="rgnDrag" layoutX="25.0" layoutY="16.0" onDragExited="#setOnDragExited" onDragOver="#setOnDragOver" onMouseDragExited="#setOnDragExited" prefHeight="542.0" prefWidth="746.0" styleClass="qr-border" stylesheets="@style.css" />
+                  <Label layoutX="242.0" layoutY="256.0" prefHeight="85.0" prefWidth="310.0" text="Перетащите QR-код на форму, либо" textFill="#e7e5e5" />
+                  <Button fx:id="btnChooseQR" layoutX="451.0" layoutY="287.0" mnemonicParsing="false" onAction="#loadFile" text="Выберите файл...">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <ImageView fitHeight="73.0" fitWidth="67.0" layoutX="364.0" layoutY="201.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/qr.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlDragging" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Label layoutX="344.0" layoutY="252.0" prefHeight="85.0" prefWidth="109.0" text="Перетащите сюда..." textFill="#e7e5e5" />
+                  <ImageView fitHeight="73.0" fitWidth="67.0" layoutX="364.0" layoutY="201.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/qr.png" />
+                     </image>
+                     <effect>
+                        <BoxBlur />
+                     </effect>
+                  </ImageView>
+                  <Region fx:id="rgnDrag1" layoutX="25.0" layoutY="16.0" onDragDone="#setOnDragDropped" onDragDropped="#setOnDragDropped" onDragExited="#setOnDragExited" onDragOver="#setOnDragOver" prefHeight="542.0" prefWidth="746.0" styleClass="qr-border" stylesheets="@style.css">
+                     <effect>
+                        <BoxBlur />
+                     </effect>
+                  </Region>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlQRScannedOne" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Label layoutX="368.0" layoutY="170.0" text="✓" textFill="#e7e5e5">
+                     <font>
+                        <Font size="58.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="253.0" layoutY="234.0" prefHeight="85.0" prefWidth="284.0" text="QR-код успешно прочитан. Заявление добавлено." textFill="#e7e5e5" />
+                  <Button layoutX="293.0" layoutY="307.0" mnemonicParsing="false" onAction="#toHome" text="Главная">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button layoutX="369.0" layoutY="307.0" mnemonicParsing="false" onAction="#toScan" text="+ Сканировать ещё">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlQRScannedTwo" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Label layoutX="368.0" layoutY="170.0" text="✓" textFill="#e7e5e5">
+                     <font>
+                        <Font size="58.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="253.0" layoutY="234.0" prefHeight="85.0" prefWidth="284.0" text="QR-код успешно прочитан. Заявление добавлено." textFill="#e7e5e5" />
+                  <Button layoutX="270.0" layoutY="307.0" mnemonicParsing="false" onAction="#toNewAppeals" text="Новые заявления">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button layoutX="392.0" layoutY="307.0" mnemonicParsing="false" onAction="#toScan" text="+ Сканировать ещё">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlNewAppeals" prefHeight="576.0" prefWidth="793.0" visible="false">
+               <children>
+                  <Label layoutX="36.0" layoutY="25.0" text="Новые заявки" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER_LEFT" layoutX="200.0" layoutY="72.0" prefHeight="92.0" prefWidth="403.0" spacing="50.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
+                     </children>
+                  </HBox>
+                  <TableView fx:id="tableNewAppeals" layoutX="14.0" layoutY="85.0" prefHeight="475.0" prefWidth="763.0" style="-fx-background-color: transparent;" stylesheets="@style.css">
+                     <columns>
+                        <TableColumn fx:id="columnId1" editable="false" prefWidth="34.39999562501907" text="id" />
+                        <TableColumn fx:id="columnFIODeclarant1" prefWidth="116.0000228881836" text="Заявитель" />
+                        <TableColumn fx:id="columnAddress1" prefWidth="116.0000228881836" text="Адрес" />
+                        <TableColumn fx:id="columnTopic1" prefWidth="167.199951171875" text="Тема" />
+                        <TableColumn fx:id="columnContent1" prefWidth="165.60009765625" text="Содержание" />
+                        <TableColumn fx:id="columnEditAppeal" maxWidth="164.800048828125" minWidth="2.0" prefWidth="139.1998291015625" />
+                     </columns>
+                  </TableView>
+                  <Button fx:id="btnClose2" layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Label layoutX="206.0" layoutY="25.0" text="15" textFill="#26bfbc">
+                     <font>
+                        <Font name="System Bold" size="26.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color red="0.06627680361270905" green="0.6075373888015747" blue="0.7157894968986511" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlAppealUpdated" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Label layoutX="368.0" layoutY="170.0" text="✓" textFill="#e7e5e5">
+                     <font>
+                        <Font size="58.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="242.0" layoutY="234.0" prefHeight="85.0" prefWidth="310.0" text="Заявление успешно изменено. QR-код сгенерирован." textFill="#e7e5e5" />
+                  <Button layoutX="309.0" layoutY="307.0" mnemonicParsing="false" onAction="#toNewAppeals" text="Новые заявки">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button layoutX="413.0" layoutY="307.0" mnemonicParsing="false" onAction="#toHome" text="Главная">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlEditAppeal" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Label fx:id="labelEditAppeal" text="Написать обращение" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <padding>
+                        <Insets left="35.0" top="25.0" />
+                     </padding>
+                  </Label>
+                  <Label layoutX="47.0" layoutY="106.0" text="ФИО Заявителя" textFill="#e7e5e5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color red="0.8736842274665833" green="0.8219103217124939" blue="0.8219103217124939" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Label>
+                  <Label layoutX="42.0" layoutY="127.0" text="ФИО Директора" textFill="#e7e5e5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color red="0.8105263113975525" green="0.786510705947876" blue="0.786510705947876" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Label>
+                  <Label layoutX="108.0" layoutY="149.0" text="Адрес" textFill="#e7e5e5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color red="0.800000011920929" green="0.7733333110809326" blue="0.7733333110809326" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Label>
+                  <Label layoutX="114.0" layoutY="170.0" text="Тема" textFill="#e7e5e5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color red="0.7368420958518982" green="0.6959064602851868" blue="0.6959064602851868" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Label>
+                  <Label layoutX="67.0" layoutY="191.0" text="Содержание" textFill="#e7e5e5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color red="0.7684210538864136" green="0.7541910409927368" blue="0.7541910409927368" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Label>
+                  <Button fx:id="btnUpdateAppeal" layoutX="174.0" layoutY="496.0" mnemonicParsing="false" onAction="#updateAppeal" text="Сохранить и сгенерировать QR-код">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Label fx:id="labelFIODirector" layoutX="174.0" layoutY="127.0" text="Тест" textFill="#cccccc">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelAddress" layoutX="174.0" layoutY="149.0" text="ФИО Заявителя" textFill="#cccccc">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelTopic" layoutX="174.0" layoutY="170.0" text="ФИО Заявителя" textFill="#cccccc">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelFIODeclarant" layoutX="174.0" layoutY="106.0" prefHeight="20.0" prefWidth="500.0" text="Тест" textFill="#cccccc">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Text fx:id="labelContent" fill="#cccccc" layoutX="174.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+                  <Label layoutX="89.0" layoutY="261.0" text="Решение" textFill="#e7e5e5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color red="0.7684210538864136" green="0.7541910409927368" blue="0.7541910409927368" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Label>
+                  <TextArea fx:id="inputResolution" layoutX="171.0" layoutY="264.0" prefHeight="60.0" prefWidth="574.0" promptText="Решение" />
+                  <Label layoutX="70.0" layoutY="336.0" text="Примечание" textFill="#e7e5e5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color red="0.7684210538864136" green="0.7541910409927368" blue="0.7541910409927368" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Label>
+                  <TextArea fx:id="inputNote" layoutX="171.0" layoutY="344.0" prefHeight="60.0" prefWidth="574.0" promptText="Примечание" />
+                  <Label layoutX="111.0" layoutY="427.0" text="Статус" textFill="#e7e5e5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color red="0.7684210538864136" green="0.7541910409927368" blue="0.7541910409927368" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Label>
+                  <ComboBox fx:id="inputStatus" layoutX="171.0" layoutY="425.0" prefWidth="150.0" promptText="Выберите статус..." />
+                  <Label layoutX="133.0" layoutY="86.0" text="ID" textFill="#e7e5e5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color red="0.8736842274665833" green="0.8219103217124939" blue="0.8219103217124939" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Label>
+                  <Label fx:id="labelId" layoutX="173.0" layoutY="86.0" prefHeight="20.0" prefWidth="500.0" text="Тест" textFill="#cccccc">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlHome" prefHeight="576.0" prefWidth="793.0">
+               <children>
+                  <Label layoutX="36.0" layoutY="25.0" text="Все заявки" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER_LEFT" layoutX="200.0" layoutY="72.0" prefHeight="92.0" prefWidth="403.0" spacing="50.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="22" textFill="#2a73ff">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Приняты" textFill="#e7e5e5" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="15" textFill="#26bfbc">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Ожидают" textFill="#e7e5e5" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="10" textFill="#fa5f7e">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Отклонено" textFill="#e7e5e5" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Button fx:id="btnClose" layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <TableView fx:id="tableAppeals" layoutX="14.0" layoutY="177.0" prefHeight="383.0" prefWidth="763.0" style="-fx-background-color: transparent;" stylesheets="@style.css">
+                    <columns>
+                      <TableColumn fx:id="columnId" editable="false" prefWidth="34.39999562501907" text="id" />
+                      <TableColumn fx:id="columnFIODeclarant" prefWidth="116.0000228881836" text="Заявитель" />
+                        <TableColumn fx:id="columnFIODirector" prefWidth="116.0000228881836" text="Директор" />
+                        <TableColumn fx:id="columnAddress" prefWidth="116.0000228881836" text="Адрес" />
+                        <TableColumn fx:id="columnTopic" prefWidth="116.0000228881836" text="Тема" />
+                        <TableColumn fx:id="columnContent" prefWidth="116.0000228881836" text="Содержание" />
+                        <TableColumn fx:id="columnStatus" prefWidth="116.0000228881836" text="Статус" />
+                    </columns>
+                  </TableView>
+               </children>
+            </Pane>
          </children>
       </StackPane>
    </children>

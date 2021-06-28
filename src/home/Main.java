@@ -1,6 +1,6 @@
 package home;
 
-import core.Database;
+import core.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import models.Appeal;
-import models.AppealOperations;
+import models.AppealDB;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class Main extends Application {
     public static final String DB_URL = "jdbc:mysql://localhost/qr_code_manager";
     public static final String DB_Driver = "com.MySql.jdbc.Driver";
     private static final Logger logger = Logger.getLogger(Main.class.getName());
-    private AppealOperations appealOperations = new AppealOperations();
+    private AppealDB appealDB = new AppealDB();
     private double x, y;
 
     @Override
@@ -53,7 +53,7 @@ public class Main extends Application {
      * @throws SQLException
      */
     public static void printAppeal(int id) throws SQLException {
-        Appeal appeal = Appeal.findById(id);
+        Appeal appeal = AppealDB.findById(id);
         System.out.println(appeal.printAsString());
     }
 
@@ -74,7 +74,8 @@ public class Main extends Application {
         Database db = new Database();
         db.connect();
 
-        printAppeal(1);
-//        launch(args);
+        // System.out.println(QRCodeRead.main("C:\\Users\\user\\Desktop\\MyQRCode.png"));
+//        QRCodeGenerator.main("id:2 FIO_declarant:Лазо Егор FIO_director:Семёнов Константин address:Белградская 62 topic:Почему content:Какое решение данной проблемы? resolution:null note:null status:2");
+        launch(args);
     }
 }

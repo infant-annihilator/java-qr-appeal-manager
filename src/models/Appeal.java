@@ -1,14 +1,20 @@
 package models;
 
-import core.Database;
+import home.Controller;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Domain model
@@ -19,22 +25,22 @@ import java.util.List;
 public class Appeal implements Serializable {
 
     private static final long serialVersionUID = 3789909326487155148L;
-    private static final int STATUS_REJECTED = 0;
-    private static final int STATUS_CHECKED = 1;
-    private static final int STATUS_AWAITING = 2;
-    private int id;
-    private String fioDeclarant;
-    private String fioDirector;
-    private String address;
-    private String topic;
-    private String content;
-    private String resolution;
-    private String note;
-    private int status;
+    public static final int STATUS_REJECTED = 0;
+    public static final int STATUS_CHECKED = 1;
+    public static final int STATUS_AWAITING = 2;
+    public int id;
+    public String fioDeclarant;
+    public String fioDirector;
+    public String address;
+    public String topic;
+    public String content;
+    public String resolution;
+    public String note;
+    public int status;
+    public String statusTitle;
+    public Button editBtn;
 
-
-    public Appeal(int id, String fioDeclarant, String fioDirector, String address, String topic, String content, String resolution, String note, int status) {
-        this.id = id;
+    public Appeal(String fioDeclarant, String fioDirector, String address, String topic, String content, String resolution, String note, int status) {
         this.fioDeclarant = fioDeclarant;
         this.fioDirector = fioDirector;
         this.address = address;
@@ -43,44 +49,29 @@ public class Appeal implements Serializable {
         this.resolution = resolution;
         this.note = note;
         this.status = status;
+        this.statusTitle = getStatusTitle();
+        this.editBtn = getEditBtn();
     }
 
-    /**
-     * Ищет заявление по id
-     * @param id
-     * @return
-     * @throws SQLException
-     */
-    public static Appeal findById(int id) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        List<Appeal> appeals = new ArrayList<>();
+    public static final String[] statuses() {
+        String[] array = new String[3];
 
-        // подключение к БД
-        Database db = new Database();
-        connection = db.connect();
-        connection.setAutoCommit(false);
-        String query = "SELECT * FROM appeal WHERE id = ?";
-        statement = connection.prepareStatement(query);
-        statement.setInt(1, id);
-        ResultSet resultSet = statement.executeQuery();
+        array[STATUS_REJECTED] = "Отклонено";
+        array[STATUS_CHECKED] = "Утверждено";
+        array[STATUS_AWAITING] = "Ожидает";
 
-        if (resultSet.next()) {
-            String fioDeclarant = resultSet.getString("FIO_declarant");
-            String fioDirector = resultSet.getString("FIO_director");
-            String address = resultSet.getString("address");
-            String topic = resultSet.getString("topic");
-            String content = resultSet.getString("content");
-            String resolution = resultSet.getString("resolution");
-            String note = resultSet.getString("note");
-            int status = resultSet.getInt("status");
-
-            Appeal appeal = new Appeal(id, fioDeclarant, fioDirector, address, topic, content, resolution, note, status);
-
-            return appeal;
-        }
-        return null;
+        return array;
     }
+
+    public static final ObservableList observeStatuses() {
+        ObservableList<String> array = FXCollections.observableArrayList();
+        array.add(STATUS_REJECTED, "Отклонено");
+        array.add(STATUS_CHECKED, "Утверждено");
+        array.add(STATUS_AWAITING, "Ожидает");
+
+        return array;
+    }
+
 
     public int getId() {
         return id;
@@ -155,18 +146,68 @@ public class Appeal implements Serializable {
     }
 
     /**
+     * Возвращает статус словом
+     * @return string
+     */
+    public String getStatusTitle() {
+        String[] array = statuses();
+        return array[this.status];
+    }
+
+    /**
+     * Возвращает кнопку редактирования
+     * @return string
+     */
+    public Button getEditBtn() {
+        Button btn = new Button("✎ Редактировать");
+        btn.setStyle("-fx-cursor: hand");
+
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/home/Home.fxml"));
+                    try {
+                        Parent root = (Parent) loader.load();
+                        Controller controller = loader.getController();
+
+                        Scene newScene = new Scene(root);
+                        Node node = (Node) event.getSource();
+                        Stage thisStage = (Stage) node.getScene().getWindow();
+                        thisStage.setScene(newScene);
+                        thisStage.show();
+
+                        controller.editAppeal(id);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        });
+        return btn;
+    }
+
+    /**
      * Возвращает модель как строку с разделителем
      * @throws SQLException
      */
-    public String printAsString() throws SQLException {
+    public String printAsString() {
             return "id:" + this.id
                     + " FIO_declarant:" + this.fioDeclarant
-                    + " FIO_director" + this.fioDirector
+                    + " FIO_director:" + this.fioDirector
                     + " address:" + this.address
                     + " topic:" + this.topic
                     + " content:" + this.content
                     + " resolution:" + this.resolution
                     + " note:" + this.note
                     + " status:" + this.status;
+    }
+
+    /**
+     * Валидация вводимых значений
+     */
+    public static void validate() {
+        System.out.println("Кнопка нажата, начало положено");
     }
 }

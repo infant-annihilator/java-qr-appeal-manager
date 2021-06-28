@@ -12,8 +12,9 @@
 }
 
 .scroll-pane {
-    -fx-background-color: #02030A;
+    -fx-background-color: transparent;
 }
+
 
 .scroll-bar:horizontal, .scroll-bar:vertical{
     -fx-background-color:transparent;
@@ -39,4 +40,54 @@
 
 .scroll-pane > .corner {
     -fx-background-color: black;
+}
+
+
+.qr-border {
+    -fx-border-style: dashed  dashed  dashed  dashed;
+    -fx-border-color: white white white white;
+    -fx-border-width: 5;
+    -fx-opacity: 0.3;
+}
+
+
+/* ТАБЛИЦА */
+
+.table-view {
+    -fx-base: #1d1d1d;
+    /* -fx-control-inner-background: #1d1d1d; */
+    -fx-control-inner-background: transparent;
+    /* -fx-background-color: #1d1d1d; */
+    -fx-background-color: transparent;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 10;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 100;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+    -fx-border-color:
+        transparent
+        transparent
+        derive(-fx-base, 80%)
+        transparent;
+    -fx-border-insets: 0 10 1 0;
+}
+
+.table-view .column-header .label {
+    -fx-font-size: 16pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: white;
+    -fx-alignment: center-left;
+    -fx-opacity: 1;
+}
+
+.table-view:focused .table-row-cell:filled:focused:selected {
+    -fx-background-color: -fx-focus-color;
 }
