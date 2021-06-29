@@ -6,13 +6,11 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.effect.BoxBlur?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
@@ -145,6 +143,11 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
+                  <Button layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                </children>
             </Pane>
             <Pane fx:id="pnlNewAppeal" prefHeight="200.0" prefWidth="200.0" visible="false">
@@ -192,91 +195,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-               </children>
-            </Pane>
-            <Pane fx:id="pnlHome1" disable="true" prefHeight="576.0" prefWidth="793.0" visible="false">
-               <children>
-                  <Label layoutX="36.0" layoutY="25.0" text="Все заявки" textFill="#e7e5e5">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <HBox alignment="CENTER_LEFT" layoutX="200.0" layoutY="72.0" prefHeight="92.0" prefWidth="403.0" spacing="50.0">
-                     <children>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="22" textFill="#2a73ff">
-                                 <font>
-                                    <Font name="System Bold" size="26.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Приняты" textFill="#e7e5e5" />
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="15" textFill="#26bfbc">
-                                 <font>
-                                    <Font name="System Bold" size="26.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Ожидают" textFill="#e7e5e5" />
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="10" textFill="#fa5f7e">
-                                 <font>
-                                    <Font name="System Bold" size="26.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Отклонено" textFill="#e7e5e5" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" layoutX="45.0" layoutY="178.0" prefHeight="42.0" prefWidth="712.0" spacing="80.0" style="-fx-background-color: #02030A;">
-                     <children>
-                        <Label text="Заявитель" textFill="#e7e5e5">
-                           <HBox.margin>
-                              <Insets left="50.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="Адрес" textFill="#e7e5e5">
-                           <HBox.margin>
-                              <Insets left="42.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="Тематика" textFill="#e7e5e5">
-                           <HBox.margin>
-                              <Insets left="12.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="Ну" textFill="#e7e5e5">
-                           <HBox.margin>
-                              <Insets left="-22.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="Статус" textFill="#e7e5e5">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <effect>
-                        <Bloom />
-                     </effect>
-                  </HBox>
-                  <ScrollPane layoutX="14.0" layoutY="232.0" prefHeight="320.0" prefWidth="746.0" stylesheets="@style.css">
-                     <content>
-                        <VBox fx:id="pnItems" prefHeight="318.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #02030A;">
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </VBox>
-                     </content>
-                  </ScrollPane>
-                  <Button fx:id="btnClose1" layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
+                  <Button layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -297,6 +216,11 @@
                         <Image url="@../images/qr.png" />
                      </image>
                   </ImageView>
+                  <Button layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                </children>
             </Pane>
             <Pane fx:id="pnlDragging" prefHeight="200.0" prefWidth="200.0" visible="false">
@@ -315,6 +239,11 @@
                         <BoxBlur />
                      </effect>
                   </Region>
+                  <Button layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                </children>
             </Pane>
             <Pane fx:id="pnlQRScannedOne" prefHeight="200.0" prefWidth="200.0" visible="false">
@@ -331,6 +260,11 @@
                      </cursor>
                   </Button>
                   <Button layoutX="369.0" layoutY="307.0" mnemonicParsing="false" onAction="#toScan" text="+ Сканировать ещё">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -381,12 +315,12 @@
                         <TableColumn fx:id="columnEditAppeal" maxWidth="164.800048828125" minWidth="2.0" prefWidth="139.1998291015625" />
                      </columns>
                   </TableView>
-                  <Button fx:id="btnClose2" layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
+                  <Button layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Label layoutX="206.0" layoutY="25.0" text="15" textFill="#26bfbc">
+                  <Label fx:id="labelCountWait2" layoutX="206.0" layoutY="25.0" text="15" textFill="#26bfbc">
                      <font>
                         <Font name="System Bold" size="26.0" />
                      </font>
@@ -414,6 +348,11 @@
                      </cursor>
                   </Button>
                   <Button layoutX="413.0" layoutY="307.0" mnemonicParsing="false" onAction="#toHome" text="Главная">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -576,6 +515,11 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
+                  <Button layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                </children>
             </Pane>
             <Pane fx:id="pnlHome" prefHeight="576.0" prefWidth="793.0">
@@ -589,7 +533,7 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label text="22" textFill="#2a73ff">
+                              <Label fx:id="labelCountChecked" text="22" textFill="#2a73ff">
                                  <font>
                                     <Font name="System Bold" size="26.0" />
                                  </font>
@@ -599,7 +543,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label text="15" textFill="#26bfbc">
+                              <Label fx:id="labelCountWait" text="15" textFill="#26bfbc">
                                  <font>
                                     <Font name="System Bold" size="26.0" />
                                  </font>
@@ -609,7 +553,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label text="10" textFill="#fa5f7e">
+                              <Label fx:id="labelCountRejected" text="10" textFill="#fa5f7e">
                                  <font>
                                     <Font name="System Bold" size="26.0" />
                                  </font>
@@ -619,7 +563,7 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <Button fx:id="btnClose" layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
+                  <Button layoutX="760.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: transparent;" text="❌" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -632,7 +576,9 @@
                         <TableColumn fx:id="columnAddress" prefWidth="116.0000228881836" text="Адрес" />
                         <TableColumn fx:id="columnTopic" prefWidth="116.0000228881836" text="Тема" />
                         <TableColumn fx:id="columnContent" prefWidth="116.0000228881836" text="Содержание" />
-                        <TableColumn fx:id="columnStatus" prefWidth="116.0000228881836" text="Статус" />
+                        <TableColumn fx:id="columnStatus" prefWidth="70.4000244140625" text="Статус" />
+                        <TableColumn fx:id="columnResolution" prefWidth="163.20001220703125" text="Резолюция" />
+                        <TableColumn fx:id="columnNote" prefWidth="163.20001220703125" text="Примечание" />
                     </columns>
                   </TableView>
                </children>

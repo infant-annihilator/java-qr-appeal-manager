@@ -1,8 +1,6 @@
 package core;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,10 +16,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class OpenFileChooser extends Application {
-    private Desktop desktop = Desktop.getDesktop();
+    private final Desktop desktop = Desktop.getDesktop();
 
+    /**
+     * Входная функция класса
+     * @param primaryStage
+     */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
         final FileChooser fileChooser = new FileChooser();
 
@@ -32,29 +34,21 @@ public class OpenFileChooser extends Application {
 
         Button buttonM = new Button("Select Multi Files");
 
-        button1.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                textArea.clear();
-                File file = fileChooser.showOpenDialog(primaryStage);
-                if (file != null) {
-                    openFile(file);
-                    List<File> files = Arrays.asList(file);
-                    printLog(textArea, files);
-                }
+        button1.setOnAction(event -> {
+            textArea.clear();
+            File file = fileChooser.showOpenDialog(primaryStage);
+            if (file != null) {
+                openFile(file);
+                List<File> files = Arrays.asList(file);
+                printLog(textArea, files);
             }
         });
 
-        buttonM.setOnAction(new EventHandler<ActionEvent>() {
+        buttonM.setOnAction(event -> {
+            textArea.clear();
+            List<File> files = fileChooser.showOpenMultipleDialog(primaryStage);
 
-            @Override
-            public void handle(ActionEvent event) {
-                textArea.clear();
-                List<File> files = fileChooser.showOpenMultipleDialog(primaryStage);
-
-                printLog(textArea, files);
-            }
+            printLog(textArea, files);
         });
 
         VBox root = new VBox();
@@ -70,6 +64,11 @@ public class OpenFileChooser extends Application {
         primaryStage.show();
     }
 
+    /**
+     * ечать логов по открываемому файлу
+     * @param textArea
+     * @param files
+     */
     private void printLog(TextArea textArea, List<File> files) {
         if (files == null || files.isEmpty()) {
             return;
@@ -79,6 +78,10 @@ public class OpenFileChooser extends Application {
         }
     }
 
+    /**
+     * Открытие файла
+     * @param file Путь
+     */
     private void openFile(File file) {
         try {
             this.desktop.open(file);

@@ -13,18 +13,18 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.sql.SQLException;
 
 /**
- * Domain model
- *
- * @author Julian Jupiter
- *
+ * Модель таблицы Appeal
  */
 public class Appeal implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3789909326487155148L;
+
     public static final int STATUS_REJECTED = 0;
     public static final int STATUS_CHECKED = 1;
     public static final int STATUS_AWAITING = 2;
@@ -40,6 +40,17 @@ public class Appeal implements Serializable {
     public String statusTitle;
     public Button editBtn;
 
+    /**
+     * Конструктор модели
+     * @param fioDeclarant ФИО заявителя
+     * @param fioDirector ФИО директора
+     * @param address Адрес
+     * @param topic Тема
+     * @param content Содержание
+     * @param resolution Решение
+     * @param note Примечание
+     * @param status Статус
+     */
     public Appeal(String fioDeclarant, String fioDirector, String address, String topic, String content, String resolution, String note, int status) {
         this.fioDeclarant = fioDeclarant;
         this.fioDirector = fioDirector;
@@ -53,7 +64,11 @@ public class Appeal implements Serializable {
         this.editBtn = getEditBtn();
     }
 
-    public static final String[] statuses() {
+    /**
+     * Статусы массивом строк
+     * @return
+     */
+    public static String[] statuses() {
         String[] array = new String[3];
 
         array[STATUS_REJECTED] = "Отклонено";
@@ -63,7 +78,11 @@ public class Appeal implements Serializable {
         return array;
     }
 
-    public static final ObservableList observeStatuses() {
+    /**
+     * Статусы как динамичесакий массив для выпадающего списка
+     * @return
+     */
+    public static ObservableList observeStatuses() {
         ObservableList<String> array = FXCollections.observableArrayList();
         array.add(STATUS_REJECTED, "Отклонено");
         array.add(STATUS_CHECKED, "Утверждено");
@@ -72,6 +91,66 @@ public class Appeal implements Serializable {
         return array;
     }
 
+    /**
+     * Возвращает статус словом
+     * @return string
+     */
+    public String getStatusTitle() {
+        String[] array = statuses();
+        return array[this.status];
+    }
+
+    /**
+     * Возвращает кнопку редактирования
+     * @return string
+     */
+    public Button getEditBtn() {
+        Button btn = new Button("✎ Редактировать");
+        btn.setStyle("-fx-cursor: hand");
+
+        btn.setOnAction(new EventHandler<>() {
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/home/Home.fxml"));
+                    try {
+                        Parent root = loader.load();
+                        Controller controller = loader.getController();
+
+                        Scene newScene = new Scene(root);
+                        Node node = (Node) event.getSource();
+                        Stage thisStage = (Stage) node.getScene().getWindow();
+                        thisStage.setScene(newScene);
+                        thisStage.show();
+
+                        controller.editAppeal(id);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        });
+        return btn;
+    }
+
+    /**
+     * Возвращает модель как строку с разделителем
+     */
+    public String printAsString() {
+            return "id:" + this.id
+                    + " FIO_declarant:" + this.fioDeclarant
+                    + " FIO_director:" + this.fioDirector
+                    + " address:" + this.address
+                    + " topic:" + this.topic
+                    + " content:" + this.content
+                    + " resolution:" + this.resolution
+                    + " note:" + this.note
+                    + " status:" + this.status;
+    }
+
+
+    /* ГЕТТЕРЫ И СЕТТЕРЫ */
 
     public int getId() {
         return id;
@@ -143,71 +222,5 @@ public class Appeal implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    /**
-     * Возвращает статус словом
-     * @return string
-     */
-    public String getStatusTitle() {
-        String[] array = statuses();
-        return array[this.status];
-    }
-
-    /**
-     * Возвращает кнопку редактирования
-     * @return string
-     */
-    public Button getEditBtn() {
-        Button btn = new Button("✎ Редактировать");
-        btn.setStyle("-fx-cursor: hand");
-
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/home/Home.fxml"));
-                    try {
-                        Parent root = (Parent) loader.load();
-                        Controller controller = loader.getController();
-
-                        Scene newScene = new Scene(root);
-                        Node node = (Node) event.getSource();
-                        Stage thisStage = (Stage) node.getScene().getWindow();
-                        thisStage.setScene(newScene);
-                        thisStage.show();
-
-                        controller.editAppeal(id);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-        });
-        return btn;
-    }
-
-    /**
-     * Возвращает модель как строку с разделителем
-     * @throws SQLException
-     */
-    public String printAsString() {
-            return "id:" + this.id
-                    + " FIO_declarant:" + this.fioDeclarant
-                    + " FIO_director:" + this.fioDirector
-                    + " address:" + this.address
-                    + " topic:" + this.topic
-                    + " content:" + this.content
-                    + " resolution:" + this.resolution
-                    + " note:" + this.note
-                    + " status:" + this.status;
-    }
-
-    /**
-     * Валидация вводимых значений
-     */
-    public static void validate() {
-        System.out.println("Кнопка нажата, начало положено");
     }
 }

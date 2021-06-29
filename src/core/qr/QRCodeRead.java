@@ -16,17 +16,14 @@ import static java.lang.System.out;
 public class QRCodeRead {
 
     /**
-     *
+     * Метод чтения кода
      * @param path Полное имя файла, включая расширение
-     * @param charset
-     * @param hashMap
-     * @return
+     * @return String Раскодированная строка
      * @throws FileNotFoundException
      * @throws IOException
      * @throws NotFoundException
      */
-    public static String readQR(String path, String charset,
-                                Map hashMap)
+    public static String readQR(String path)
             throws FileNotFoundException, IOException,
             NotFoundException
     {
@@ -42,18 +39,21 @@ public class QRCodeRead {
         return result.getText();
     }
 
-
+    /**
+     * Главная функция класса
+     * @param path Путь к читаемому изображению
+     * @return Раскодированная строка
+     * @throws IOException
+     */
     public static String main(String path) throws IOException {
         String charset = "UTF-8";
 
-        Map<EncodeHintType, ErrorCorrectionLevel> hashMap
-                = new HashMap();
+        Map<EncodeHintType, ErrorCorrectionLevel> hashMap = new HashMap();
 
-        hashMap.put(EncodeHintType.ERROR_CORRECTION,
-                ErrorCorrectionLevel.L);
+        hashMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
 
         try {
-            return readQR(path, charset, hashMap);
+            return readQR(path);
         } catch (NotFoundException e) {
             e.printStackTrace();
             out.println("Файл " + path + " не найден!");

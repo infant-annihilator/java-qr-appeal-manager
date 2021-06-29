@@ -5,13 +5,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Data access object
+ * Класс для операций, связанных с БД
+ * (непосредственно с таблицей Appeal)
  */
 public class AppealDB {
 
@@ -19,14 +18,13 @@ public class AppealDB {
 
     /**
      * Ищет заявление по id
-     * @param id
-     * @return
+     * @param id Id заявления
+     * @return Appeal Объект заявления
      * @throws SQLException
      */
     public static Appeal findById(int id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
-        List<Appeal> appeals = new ArrayList<>();
 
         // подключение к БД
         Database db = new Database();
@@ -57,7 +55,7 @@ public class AppealDB {
 
     /**
      * Возвращает все заявления
-     * @return
+     * @return ObservableList Динамический массив моделей Appeal
      * @throws SQLException
      */
     public static ObservableList<Appeal> findAll() throws SQLException {
@@ -94,8 +92,8 @@ public class AppealDB {
     }
 
     /**
-     * Возвращает все заявления
-     * @return
+     * Возвращает все заявления со статусом "ожидание" (только новые)
+     * @return ObservableList Динамический массив моделей Appeal
      * @throws SQLException
      */
     public static ObservableList<Appeal> findNew() throws SQLException {
@@ -131,45 +129,6 @@ public class AppealDB {
         return appealsData;
     }
 
-
-    /**
-     * Проверяет, существует ли заявление по Id
-     * @param id Id заявления
-     * @return bool
-     * @throws SQLException
-     */
-    public boolean appealExists(String id) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        List<Appeal> appeals = new ArrayList<>();
-
-        try {
-            // подключение к БД
-            Database db = new Database();
-            connection = db.connect();
-            connection.setAutoCommit(false);
-            String query = "SELECT id, FIO_declarant, FIO_director, address, topic FROM appeal WHERE id = ?";
-            statement = connection.prepareStatement(query);
-            int counter = 1;
-            statement.setString(counter++, id);
-            ResultSet resultSet = statement.executeQuery();
-
-            return !appeals.isEmpty();
-        } catch (SQLException exception) {
-            logger.log(Level.SEVERE, exception.getMessage());
-        } finally {
-            if (null != statement) {
-                statement.close();
-            }
-
-            if (null != connection) {
-                connection.close();
-            }
-        }
-
-        return appeals.isEmpty() ? false : true;
-    }
-
     /**
      * Сохраняет новое заявление в БД
      * @param appeal Объект заявления, который нужно сохранить в БД
@@ -185,17 +144,32 @@ public class AppealDB {
             Database db = new Database();
             connection = db.connect();
             connection.setAutoCommit(false);
-            String query = "INSERT INTO appeal(FIO_declarant, FIO_director, address, topic, content, resolution, note, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-            statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            int counter = 1;
-            statement.setString(counter++, appeal.getFioDeclarant());
-            statement.setString(counter++, appeal.getFioDirector());
-            statement.setString(counter++, appeal.getAddress());
-            statement.setString(counter++, appeal.getTopic());
-            statement.setString(counter++, appeal.getContent());
-            statement.setString(counter++, appeal.getResolution());
-            statement.setString(counter++, appeal.getNote());
-            statement.setInt(counter++, appeal.getStatus());
+
+            if (appeal.id == 0) {
+                String query = "INSERT INTO appeal(FIO_declarant, FIO_director, address, topic, content, status) VALUES(?, ?, ?, ?, ?, ?)";
+                statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                int counter = 1;
+                statement.setString(counter++, appeal.getFioDeclarant());
+                statement.setString(counter++, appeal.getFioDirector());
+                statement.setString(counter++, appeal.getAddress());
+                statement.setString(counter++, appeal.getTopic());
+                statement.setString(counter++, appeal.getContent());
+                statement.setInt(counter++, appeal.getStatus());
+            } else {
+                // если запись уже была в БД
+                String query = "INSERT INTO appeal(id, FIO_declarant, FIO_director, address, topic, content, status) VALUES(?, ?, ?, ?, ?, ?, ?)";
+                statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                int counter = 1;
+                statement.setInt(counter++, appeal.getId());
+                statement.setString(counter++, appeal.getFioDeclarant());
+                statement.setString(counter++, appeal.getFioDirector());
+                statement.setString(counter++, appeal.getAddress());
+                statement.setString(counter++, appeal.getTopic());
+                statement.setString(counter++, appeal.getContent());
+                statement.setInt(counter++, appeal.getStatus());
+            }
+
+
             statement.executeUpdate();
             connection.commit();
             resultSet = statement.getGeneratedKeys();
@@ -274,7 +248,7 @@ public class AppealDB {
     }
 
     /**
-     *
+     * Чтение QR кода как строки
      * @param str
      * @return
      */
@@ -290,18 +264,120 @@ public class AppealDB {
         int indexstatus = str.indexOf("status:"); // Нахождение слова status
 
         // Допустим наша строка называется Str где все данные из БД
-        String id = str.substring(indexId + 3, indexFIO_declarant);
-        String FIO_declarant = str.substring(indexFIO_declarant + 14, indexFIO_director);
-        String FIO_director = str.substring(indexFIO_director + 13, indexaddress);
-        String address = str.substring(indexaddress + 8, indextopic);
-        String topic = str.substring(indextopic + 6, indexcontent);
-        String content = str.substring(indexcontent + 8, indexresolution);
-        String resolution = str.substring(indexresolution + 11, indexnote);
-        String note = str.substring(indexnote + 5, indexstatus);
+        String id = str.substring(indexId + 3, indexFIO_declarant - 1);
+        String FIO_declarant = str.substring(indexFIO_declarant + 14, indexFIO_director - 1);
+        String FIO_director = str.substring(indexFIO_director + 13, indexaddress - 1);
+        String address = str.substring(indexaddress + 8, indextopic - 1);
+        String topic = str.substring(indextopic + 6, indexcontent - 1);
+        String content = str.substring(indexcontent + 8, indexresolution - 1);
+        String resolution = str.substring(indexresolution + 11, indexnote - 1);
+        String note = str.substring(indexnote + 5, indexstatus - 1);
         int status = Integer.parseInt(str.substring(indexstatus + 7));
 
         Appeal appeal = new Appeal(FIO_declarant, FIO_director, address, topic, content, resolution, note, status);
-        return save(appeal);
+        appeal.id = Integer.parseInt(id);
+
+        if (appeal.status == Appeal.STATUS_AWAITING) {
+            return save(appeal);
+        } else {
+            System.out.println(appeal.resolution);
+            return update(appeal);
+        }
     }
 
+
+    /**
+     * Возвращение последнего Id из БД
+     * @return int
+     * @throws SQLException
+     */
+    public static int getLastId() throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        // подключение к БД
+        Database db = new Database();
+        connection = db.connect();
+        connection.setAutoCommit(false);
+        String query = "SELECT * FROM appeal ORDER BY id DESC";
+        statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            return resultSet.getInt(1);
+        }
+        return 0;
+    }
+
+    /**
+     * Считает количестов обращений со статусом ожидания
+     * @return int
+     * @throws SQLException
+     */
+    public static int countNew() throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        // подключение к БД
+        Database db = new Database();
+        connection = db.connect();
+        connection.setAutoCommit(false);
+        String query = "SELECT * FROM appeal WHERE status = " + Appeal.STATUS_AWAITING;
+        statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
+        int count = 0;
+
+        while (resultSet.next()) {
+            count++;
+        }
+        return count;
+    }
+
+    /**
+     * Считает количестов обращений со статусом отклонено
+     * @return int
+     * @throws SQLException
+     */
+    public static int countRejected() throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        // подключение к БД
+        Database db = new Database();
+        connection = db.connect();
+        connection.setAutoCommit(false);
+        String query = "SELECT * FROM appeal WHERE status = " + Appeal.STATUS_REJECTED;
+        statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
+        int count = 0;
+
+        while (resultSet.next()) {
+            count++;
+        }
+        return count;
+    }
+
+    /**
+     * Считает количестов обращений со статусом утверждено
+     * @return int
+     * @throws SQLException
+     */
+    public static int countChecked() throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        // подключение к БД
+        Database db = new Database();
+        connection = db.connect();
+        connection.setAutoCommit(false);
+        String query = "SELECT * FROM appeal WHERE status = " + Appeal.STATUS_CHECKED;
+        statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery();
+        int count = 0;
+
+        while (resultSet.next()) {
+            count++;
+        }
+        return count;
+    }
 }

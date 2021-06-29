@@ -12,18 +12,25 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Класс, предназначенный для генерации QR-кода
+ */
 public class QRCodeGenerator {
     public static final String QR_CODE_IMAGE_PATH = "./MyQRCode.png";
 
+    /**
+     * Функция, создающая QR-код
+     * @param text Строка, которую нужно закодировать
+     * @param width Ширина формируемого иззображения
+     * @param height Высота формируемого иззображения
+     * @param filePath Путь, в котором сохранится изображение
+     * @throws WriterException
+     * @throws IOException
+     */
     public static void generateQRCodeImage(String text, int width, int height, String filePath)
             throws WriterException, IOException {
-//        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-//        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
-//
-//        Path path = FileSystems.getDefault().getPath(filePath);
-//        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
 
-        Map<EncodeHintType,Object> hints = new HashMap<EncodeHintType, Object>();
+        Map<EncodeHintType, Object> hints = new HashMap<>();
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
         hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
         BitMatrix matrix = null;
@@ -33,14 +40,17 @@ public class QRCodeGenerator {
             e.printStackTrace();
         }
 
-//        ImageIO.write(matrixToImage(matrix), "png", response.getOutputStream());
-
         Path path = FileSystems.getDefault().getPath(filePath);
         MatrixToImageWriter.writeToPath(matrix, "PNG", path);
     }
 
-    public static void main(String text) {
-        String fileName = QR_CODE_IMAGE_PATH;
+    /**
+     * Главная функция класса
+     * @param fileName Имя генерируемого файла
+     * @param text Кодируемая строка
+     */
+    public static void main(String fileName, String text) {
+//        String fileName = QR_CODE_IMAGE_PATH;
         try {
             generateQRCodeImage(text, 100, 100, fileName);
             System.out.println("QR сгенерирован!");

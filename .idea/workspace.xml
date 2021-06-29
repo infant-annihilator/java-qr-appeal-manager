@@ -2,21 +2,39 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="Доработана модель БД возвращает объект Appeal, а не строку">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/zxing.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/javafx_sdk_16.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/zxing.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyQRCode.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/qr/core/Database.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/qr/core/Database.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/qr/core/OpenFileChooser$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/qr/core/OpenFileChooser$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/qr/core/OpenFileChooser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/qr/core/OpenFileChooser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/qr/core/qr/QRCodeGenerator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/qr/core/qr/QRCodeGenerator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/qr/core/qr/QRCodeRead.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/qr/core/qr/QRCodeRead.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/qr/home/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/qr/home/Controller.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/qr/home/Home.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/qr/home/Home.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/qr/home/Item.fxml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/qr/home/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/qr/home/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/qr/home/NewAppeal.fxml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/qr/home/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/qr/home/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/qr/models/Appeal$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/qr/models/Appeal$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/qr/models/Appeal.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/qr/models/Appeal.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/qr/models/AppealOperations.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/qr/models/AppealDB.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/qr/models/AppealDB.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/qr.iml" beforeDir="false" afterPath="$PROJECT_DIR$/qr.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/OpenFileChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/OpenFileChooser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/qr/QRCodeGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/qr/QRCodeGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/qr/QRCodeRead.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/qr/QRCodeRead.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/Home.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/Home.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home/Item.fxml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/home/NewAppeal.fxml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/home/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/home/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/Appeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Appeal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/AppealOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/AppealDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/AppealDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/AppealDB.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +112,6 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/home/Item.fxml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/home/Controller.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/home/Home.fxml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/.idea/gradle.xml" root0="FORCE_HIGHLIGHTING" />
@@ -177,10 +194,12 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="dynamic.classpath" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../Program Files/Java/zxing" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/plugins/mysql-connector-java-8.0.24.jar" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />

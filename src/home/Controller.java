@@ -17,7 +17,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -32,16 +31,18 @@ import java.util.ResourceBundle;
 
 /**
  * Класс, отвечающий за события интерфейса
+ * и связывающий между собой модели (логику программы)
+ * и файлы разметки (интерфейс пользователя)
  */
 public class Controller implements Initializable {
 
     private ObservableList<Appeal> appealsData = FXCollections.observableArrayList();
 
+    /*  ЭЛЕМЕНТЫ ИЗ РАЗМЕТКИ */
+
     @FXML
     private Window main;
 
-    @FXML
-    private VBox pnItems = null;
     @FXML
     private Button btnMain;
 
@@ -59,9 +60,6 @@ public class Controller implements Initializable {
 
     @FXML
     private Button btnScanQR;
-
-    @FXML
-    private Button btnClose;
 
     @FXML
     private Button btnCreateAnotherAppeal;
@@ -151,6 +149,18 @@ public class Controller implements Initializable {
     private Text labelContent;
 
     @FXML
+    private Label labelCountRejected;
+
+    @FXML
+    private Label labelCountChecked;
+
+    @FXML
+    private Label labelCountWait;
+
+    @FXML
+    private Label labelCountWait2;
+
+    @FXML
     private Label labelStatus;
 
     @FXML
@@ -180,6 +190,11 @@ public class Controller implements Initializable {
     @FXML
     private TableColumn<Appeal, String> columnStatus;
 
+    @FXML
+    private TableColumn<Appeal, String> columnResolution;
+
+    @FXML
+    private TableColumn<Appeal, String> columnNote;
 
 
     @FXML
@@ -202,14 +217,47 @@ public class Controller implements Initializable {
 
     @FXML
     private TableColumn<Appeal, String> columnEditAppeal;
+
+
     /**
      * Инициализация данных при запуске приложения
      */
     public void initialize(URL location, ResourceBundle resources) {
         initAppeals();
         initNewAppeals();
+        try {
+            initCounters();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
+    /**
+     * Обновление данных при обновлени
+     */
+    public void refresh() {
+        initAppeals();
+        initNewAppeals();
+        try {
+            initCounters();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    /**
+     * Обновляет счётчики
+     */
+    public void initCounters() throws SQLException {
+        labelCountRejected.setText(String.valueOf(AppealDB.countRejected()));
+        labelCountChecked.setText(String.valueOf(AppealDB.countChecked()));
+        labelCountWait.setText(String.valueOf(AppealDB.countNew()));
+        labelCountWait2.setText(String.valueOf(AppealDB.countNew()));
+    }
+
+    /**
+     * Обновляет значения в таблице обращений
+     */
     public void initAppeals() {
         try {
             appealsData = AppealDB.findAll();
@@ -218,18 +266,23 @@ public class Controller implements Initializable {
         }
 
         // устанавливаем тип и значение которое должно хранится в колонке
-        columnId.setCellValueFactory(new PropertyValueFactory<Appeal, Integer>("id"));
-        columnFIODeclarant.setCellValueFactory(new PropertyValueFactory<Appeal, String>("fioDeclarant"));
-        columnFIODirector.setCellValueFactory(new PropertyValueFactory<Appeal, String>("fioDirector"));
-        columnAddress.setCellValueFactory(new PropertyValueFactory<Appeal, String>("address"));
-        columnTopic.setCellValueFactory(new PropertyValueFactory<Appeal, String>("topic"));
-        columnContent.setCellValueFactory(new PropertyValueFactory<Appeal, String>("content"));
-        columnStatus.setCellValueFactory(new PropertyValueFactory<Appeal, String>("statusTitle"));
+        columnId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        columnFIODeclarant.setCellValueFactory(new PropertyValueFactory<>("fioDeclarant"));
+        columnFIODirector.setCellValueFactory(new PropertyValueFactory<>("fioDirector"));
+        columnAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        columnTopic.setCellValueFactory(new PropertyValueFactory<>("topic"));
+        columnContent.setCellValueFactory(new PropertyValueFactory<>("content"));
+        columnStatus.setCellValueFactory(new PropertyValueFactory<>("statusTitle"));
+        columnResolution.setCellValueFactory(new PropertyValueFactory<>("resolution"));
+        columnNote.setCellValueFactory(new PropertyValueFactory<>("note"));
 
         // заполняем таблицу данными
         tableAppeals.setItems(appealsData);
     }
 
+    /**
+     * Обновляет значения в таблице новых обращений
+     */
     public void initNewAppeals() {
         try {
             appealsData = AppealDB.findNew();
@@ -255,9 +308,7 @@ public class Controller implements Initializable {
      * @param actionEvent
      */
     public void closeWindow(ActionEvent actionEvent) {
-        if (actionEvent.getSource() == btnClose) {
-            System.exit(0);
-        }
+        System.exit(0);
     }
 
     public void handleClicks(ActionEvent actionEvent) {
@@ -276,8 +327,14 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Создание нового заявления при нажатии на кнопку btnNewAppeal
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void newAppeal(ActionEvent actionEvent) throws SQLException {
         if (actionEvent.getSource() == btnNewAppeal) {
+            // считывание форм
             String fioDeclarant = inputFIODeclarant.getText();
             String fioDirector = inputFIODirector.getText();
             String address = inputAddress.getText();
@@ -285,14 +342,17 @@ public class Controller implements Initializable {
             String content = inputContext.getText();
             int status = Appeal.STATUS_AWAITING;
 
+
             // добавление в БД
             Appeal appeal = new Appeal(fioDeclarant, fioDirector, address, topic, content, null, null, status);
             AppealDB appealDB = new AppealDB();
             appealDB.save(appeal);
+            // добавление id по последнему в БД
+            appeal.id = AppealDB.getLastId();
 
             // создание QR-кода
-//            String fileName = "Заявление" + Integer.toString(appeal.id);
-            QRCodeGenerator.main(appeal.printAsString());
+            String fileName = "./" + appeal.id + "_офис1.png";
+            QRCodeGenerator.main(fileName, appeal.printAsString());
 
             // переключение страницы
             pnlAppealCreated.setVisible(true);
@@ -306,11 +366,15 @@ public class Controller implements Initializable {
             inputTopic.setText("");
             inputContext.setText("");
 
-            initAppeals();
-            initNewAppeals();
+            refresh();
         }
     }
 
+    /**
+     * Формирование вида для редактирования обращения
+     * @param id Id редакт. обращения
+     * @throws SQLException
+     */
     public void editAppeal(int id) throws SQLException {
         Appeal appeal = AppealDB.findById(id);
 
@@ -334,7 +398,7 @@ public class Controller implements Initializable {
 
     /**
      * Сохранение обновлённого заявления
-     * @param actionEvent
+     * @param actionEvent Событие
      * @throws SQLException
      */
     public void updateAppeal(ActionEvent actionEvent) throws SQLException {
@@ -351,15 +415,23 @@ public class Controller implements Initializable {
             appeal.note = note;
             appeal.status = status;
             AppealDB.update(appeal);
-            QRCodeGenerator.main(appeal.printAsString());
 
-            initAppeals();
-            initNewAppeals();
+            String fileName = "./" + appeal.id + "_офис2.png";
+            QRCodeGenerator.main(fileName, appeal.printAsString());
+
+            refresh();
 
             toAppealUpdated();
         }
     }
 
+    /**
+     * Drag'n'Drop: мышь находится в предлах области для перетаскивания
+     * @param event
+     * @throws NotFoundException
+     * @throws IOException
+     * @throws WriterException
+     */
     public void setOnDragOver(DragEvent event) throws NotFoundException, IOException, WriterException {
         if (event.getGestureSource() != rgnDrag
                 && event.getDragboard().hasFiles()) {
@@ -375,7 +447,7 @@ public class Controller implements Initializable {
     }
 
     /**
-     * При отпускании мыши при драг н дропе или выходе за окно
+     * Drag'n'Drop: При отпускании мыши при драг н дропе или выходе за окно
      * @param event
      * @throws NotFoundException
      * @throws IOException
@@ -390,32 +462,38 @@ public class Controller implements Initializable {
     }
 
     /**
-     * Завершение Drag n Drop
+     * Drag'n'Drop: завершение
      * @param event
      */
-    public void setOnDragDropped(DragEvent event) throws NotFoundException, IOException, WriterException {
+    public void setOnDragDropped(DragEvent event) throws IOException, SQLException {
         Dragboard db = event.getDragboard();
-//        boolean success = false;
+        boolean success = false;
         if (db.hasFiles()) {
-//            System.out.println(db.getFiles().toString());
+            String filePath = db.getFiles().toString();
+            filePath = filePath.replace("[", "");
+            filePath = filePath.replace("]", "");
+            System.out.println(filePath);
 
-            QRCodeRead.main(db.getFiles().toString());
-//            success = true;
+            String appealAsString = QRCodeRead.main(filePath);
+            success = true;
+
+            System.out.println(appealAsString);
+            AppealDB.readString(appealAsString);
+
+            refresh();
+
+            qrScanned();
         }
 
         /* let the source know whether the string was successfully
          * transferred and used */
-//        event.setDropCompleted(success);
-
-        pnlAppealCreated.setVisible(true);
-        pnlAppealCreated.setStyle("-fx-background-color : #02030A");
-        pnlAppealCreated.toFront();
+        event.setDropCompleted(success);
 
         event.consume();
     }
 
     /**
-     * Загрузка файла
+     * Загрузка QR-кода
      */
     public void loadFile() throws IOException, SQLException {
         FileChooser fileChooser = new FileChooser();
@@ -429,13 +507,15 @@ public class Controller implements Initializable {
             appealAsString = QRCodeRead.main(selectedFile.getPath());
         }
 
+        System.out.println(appealAsString);
         AppealDB.readString(appealAsString);
 
-        initAppeals();
-        initNewAppeals();
+        refresh();
 
         qrScanned();
     }
+
+    /* ПЕРЕКЛЮЧЕНИЕ ПАНЕЛЕЙ (ВКЛАДОК) */
 
     public void qrScanned() {
         pnlQRScannedOne.setVisible(true);
